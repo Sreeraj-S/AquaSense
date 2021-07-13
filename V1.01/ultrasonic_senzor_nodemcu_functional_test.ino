@@ -23,12 +23,12 @@
 
 // You should get Auth Token in the Blynk App.
 // Go to the Project Settings (nut icon).
-char auth[] = "Kfd-kNqbEi3Q00U9oThvyfOjVpq0WwpN";
+char auth[] = "***********************";
 
 // Your WiFi credentials.
 // Set password to "" for open networks.
-char ssid[] = "Mystic";
-char pass[] = "p@dmalayam";
+char ssid[] = ***********************";
+char pass[] = "***********************";
 void setup() {
 
   Serial.begin (9600);
