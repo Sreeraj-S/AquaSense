@@ -1,7 +1,9 @@
 
 /*
 ********************************************
-14CORE ULTRASONIC DISTANCE SENSOR CODE TEST
+                ESP 32
+    ULTRASONIC DISTANCE SENSOR CODE
+            Version : 1.0
 ********************************************
 */
 #define TRIGGER 4
