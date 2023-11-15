@@ -12,8 +12,8 @@
 
 #define TRIGGER 4
 #define ECHO    5
-const char* ssid = "Mystic";  //replace
-const char* password =  "p@dmalayam"; //replace
+const char* ssid = "***username***";  //replace
+const char* password =  "***pwd***"; //replace
 AsyncWebServer server(80);
 //int relayPin = 23;
 void setup()
