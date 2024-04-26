@@ -500,20 +500,20 @@ main .analyse .bottom_tank svg circle{
 
 .tank {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: last baseline;
     width: 15vh;
     height: 200px;
     background-color: #f0f0f0;
     border-radius: 20px;
     border: 1px solid #181a1e;
-    overflow: hidden;
   }
   
   .water {
     flex-grow:1;
     display: flex;
     background-color:aqua;
+    border-radius: 20px;
   }
 
   .motor{

@@ -3,8 +3,8 @@ const menuBtn = document.getElementById('menu-btn');
 const closeBtn = document.getElementById('close-btn');
 
 const darkMode = document.querySelector('.dark-mode');
-const topTank = document.getElementById('topTank');
-const bottomTank = document.getElementById('bottomTank');
+const topTank = document.getElementById('top-tank');
+const bottomTank = document.getElementById('bottom-tank');
 
 
 
@@ -14,14 +14,11 @@ var socket = io.connect('http://' + document.domain + ':' + location.port);
         socket.on('mqtt_message', function(msg) {
             var topic = msg.topic;
             var data = msg.data;
-            console.log(topic);
-            console.log(data);
             if (topic === 'esp32/top/fill') {
                 document.getElementById('top_data').innerText = data+"%";
-                document.getElementById('top_pect').innerText = data+"%";
-                topTank.style.height = data+'%';
+                topTank.style.height = `${data}%`;
+
             } else if (topic === 'esp32/bottom/fill') {
-                document.getElementById('bottom_pect').innerText = data+"%";
                 document.getElementById('bottom_data').innerText = data+"%";
                 bottomTank.style.height = data+'%';
 
@@ -47,18 +44,6 @@ darkMode.addEventListener('click', () => {
 })
 
 
-Orders.forEach(order => {
-    const tr = document.createElement('tr');
-    const trContent = `
-        <td>${order.productName}</td>
-        <td>${order.productNumber}</td>
-        <td>${order.paymentStatus}</td>
-        <td class="${order.status === 'Declined' ? 'danger' : order.status === 'Pending' ? 'warning' : 'primary'}">${order.status}</td>
-        <td class="primary">Details</td>
-    `;
-    tr.innerHTML = trContent;
-    document.querySelector('table tbody').appendChild(tr);
-});
 
 
   
