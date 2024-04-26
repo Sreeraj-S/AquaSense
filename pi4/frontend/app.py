@@ -22,7 +22,7 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     socketio.emit('mqtt_message', {'topic': msg.topic, 'data': msg.payload.decode("utf-8")})
 
-mqtt_client =  mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+mqtt_client =  mqtt.Client(mqtt.CallbackAPIVersion.VERSION1)
 mqtt_client.on_connect = on_connect
 mqtt_client.on_message = on_message
 mqtt_client.connect(MQTT_BROKER, MQTT_PORT, MQTT_KEEPALIVE_INTERVAL)
