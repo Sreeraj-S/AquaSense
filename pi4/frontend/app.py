@@ -8,7 +8,7 @@ app = Flask(__name__)
 socketio = SocketIO(app)
 
 
-MQTT_BROKER = "localhost"
+MQTT_BROKER = "172.25.0.2"
 MQTT_PORT = 1883
 MQTT_TOPICS = ["esp32/top/fill", "esp32/bottom/fill","esp32/motor"]
 MQTT_KEEPALIVE_INTERVAL = 45
