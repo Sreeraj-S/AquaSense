@@ -514,6 +514,8 @@ main .analyse .bottom_tank svg circle{
     display: flex;
     background-color:aqua;
     border-radius: 20px;
+    height: 0%;
+    transition: height 0.3s ease;
   }
 
   .motor{
