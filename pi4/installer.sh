@@ -6,13 +6,18 @@ DOCKER_IMAGE="AquaSenseImg"
 
 # Check if the directory already exists
 if [ -d "$LOCAL_DIR" ]; then
-    echo "Repository already exists. Pulling latest changes..."
+    echo "Repository already exists. Checking for changes..."
     cd "$LOCAL_DIR"/pi4 || exit
-    git checkout dev
     git fetch origin
-    git pull origin dev
-    echo "Changes detected. Building Docker image..."
-    docker compose up --build
+    if git diff --quiet origin/dev; then
+        echo "No changes detected. Starting Docker container..."
+        docker compose up
+    else
+        echo "Changes detected. Building Docker image..."
+        git checkout dev
+        git pull origin dev
+        docker compose up --build
+    fi
 else
     echo "Cloning repository..."
     git clone "$REPO_URL" "$LOCAL_DIR"
@@ -20,6 +25,6 @@ else
     git checkout dev
     git pull
     ls
-    docker compose up --build
+    docker compose up
 fi
 
