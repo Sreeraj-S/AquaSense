@@ -1,11 +1,18 @@
 services:
   mqtt:
-    build: ./mosquitto
+    build: ./backend/mosquitto
     ports:
       - "1883:1883"
     networks:
       aquasenseNet:
         ipv4_address: 172.25.0.2
+  mysql:
+    build: ./backend/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      aquasenseNet:
+        ipv4_address: 172.25.0.3
 
   frontend:
     build: ./frontend
@@ -14,11 +21,13 @@ services:
     environment:
       FLASK_APP: app.py
       FLASK_ENV: development
+      MYSQL_IP: mysql
     depends_on:
       - mqtt
+      - mysql
     networks:
       aquasenseNet:
-        ipv4_address: 172.25.0.3
+        ipv4_address: 172.25.0.4
 
 networks:
   aquasenseNet:
@@ -27,3 +36,5 @@ networks:
       driver: default
       config:
         - subnet: 172.25.0.0/16
+
+        
