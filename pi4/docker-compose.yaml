@@ -6,6 +6,7 @@ services:
     networks:
       aquasenseNet:
         ipv4_address: 172.25.0.2
+
   mysql:
     build: ./backend/mysql
     ports:
@@ -13,6 +14,12 @@ services:
     networks:
       aquasenseNet:
         ipv4_address: 172.25.0.3
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "--silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
   frontend:
     build: ./frontend
@@ -23,8 +30,10 @@ services:
       FLASK_ENV: development
       MYSQL_IP: mysql
     depends_on:
-      - mqtt
-      - mysql
+      mysql:
+        condition: service_healthy
+      mqtt:
+        condition: service_started
     networks:
       aquasenseNet:
         ipv4_address: 172.25.0.4
@@ -36,5 +45,3 @@ networks:
       driver: default
       config:
         - subnet: 172.25.0.0/16
-
-        

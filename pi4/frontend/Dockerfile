@@ -21,4 +21,4 @@ EXPOSE 5000
 
 ENV FLASK_APP=app:app.py
 
-CMD ["sh", "-c", "flask db migrate -m \"Initial migration.\" && flask db upgrade && python app.py"]
+CMD ["python","app.py"]
