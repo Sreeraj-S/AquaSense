@@ -17,8 +17,27 @@ closeBtn.addEventListener('click', () => {
     }, 400); // Match the duration of the animation
 });
 
+const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+const storedDarkMode = localStorage.getItem('darkMode');
+
+if (storedDarkMode) {
+    if (storedDarkMode === 'true') {
+        document.body.classList.add('dark-mode-variables');
+        darkMode.querySelector('span:nth-child(1)').classList.remove('active');
+        darkMode.querySelector('span:nth-child(2)').classList.add('active');
+    }
+}
+
 darkMode.addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode-variables');
-    darkMode.querySelector('span:nth-child(1)').classList.toggle('active');
-    darkMode.querySelector('span:nth-child(2)').classList.toggle('active');
+    if (document.body.classList.contains('dark-mode-variables')) {
+        document.body.classList.remove('dark-mode-variables');
+        localStorage.setItem('darkMode', 'false');
+        darkMode.querySelector('span:nth-child(1)').classList.add('active');
+        darkMode.querySelector('span:nth-child(2)').classList.remove('active');
+    } else {
+        document.body.classList.add('dark-mode-variables');
+        localStorage.setItem('darkMode', 'true');
+        darkMode.querySelector('span:nth-child(1)').classList.remove('active');
+        darkMode.querySelector('span:nth-child(2)').classList.add('active');
+    }
 });

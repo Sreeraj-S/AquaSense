@@ -1,5 +1,7 @@
 
 motorSwitch = document.getElementById('motor-switch');
+smartPumpBtn = document.getElementById('smart-pump-button')
+predictAvailBtn=document.getElementById('predict-avail-button')
 fetch("/switch/state").then((response) => {
     return response.json();
 }).then((data) => {
@@ -30,6 +32,45 @@ document.addEventListener('DOMContentLoaded', (event) => {
             alert('Error: ' + error.message);
         }
     });
+    smartPumpBtn.addEventListener('click', async (event) => {
+        try {
+            const response = await fetch('/run/smart-pump', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Ai Called successfully.');
+                location.reload();
+            } else {
+                const errorData = await response.json();
+                throw new Error('Failed to Call Ai: ' + errorData.error);
+            }
+        } catch (error) {
+            alert(error.message);
+        }
+    });
+    predictAvailBtn.addEventListener('click', async (event) => {
+        try {
+            const response = await fetch('/run/predict-avail', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Ai Called successfully.');
+            } else {
+                const errorData = await response.json();
+                throw new Error('Failed to Call Ai: ' + errorData.error);
+            }
+        } catch (error) {
+            alert(error.message);
+        }
+    });
 });
-
-
