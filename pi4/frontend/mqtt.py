@@ -3,6 +3,7 @@ from creation import db,app,logger
 import paho.mqtt.client as mqtt
 from config import Config
 from models import MotorMessage,AvailMessage,TopFillMessage,DataSensor,BottomFillMessage,PredictAvailMessage
+from scheduler import run_model
 
 
 MQTT_BROKER = Config.MQTT_BROKER
@@ -53,10 +54,14 @@ def on_message(client, userdata, msg):
             elif msg.topic == MQTT_TOPICS["TOP_FILL"]:
                 top_fill_message = TopFillMessage(payload=int(msg.payload.decode("utf-8")))
                 db.session.add(top_fill_message)
-            
+                if top_fill_message > 90 and db.session.query(DataSensor).filter(DataSensor.topic == MQTT_TOPICS["MOTOR"]).first().payload == 1:
+                    publish(MQTT_TOPICS["MOTOR"], 0)
+                if top_fill_message < 10 and db.session.query(DataSensor).filter(DataSensor.topic == MQTT_TOPICS["MOTOR"]).first().payload == 0:
+                    run_model()
             elif msg.topic == MQTT_TOPICS["BOTTOM_FILL"]:
                 bottom_fill_message = BottomFillMessage(payload=int(msg.payload.decode("utf-8")))
                 db.session.add(bottom_fill_message)
+                
 
             db.session.commit()
         except Exception as e:
