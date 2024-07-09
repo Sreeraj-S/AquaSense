@@ -15,7 +15,7 @@ ENV SMART_PUMP=esp32/smart_pump
 ENV SMART_PUMP_MODEL=mlmodel/SmartWaterPumpModel.pt
 ENV PREDICT_AVAIL_MODEL=mlmodel/PredictWaterAvailModel.pt
 ENV MQTT_KEEPALIVE_INTERVAL=45
-ENV MOTOR_TIMER=7
+ENV MOTOR_TIMER=1
 
 COPY . /app
 # 

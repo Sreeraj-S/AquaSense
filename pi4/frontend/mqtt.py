@@ -13,7 +13,8 @@ MQTT_KEEPALIVE_INTERVAL = Config.MQTT_KEEPALIVE_INTERVAL
 
 subscribed_topics = set()
 
-
+def publish(topic, data):
+    mqtt_client.publish(topic, data)
 # MQTT Callbacks
 def on_connect(client, userdata, flags, rc):
     logger.info("Connected with result code " + str(rc))
@@ -92,8 +93,7 @@ def mqtt_stop():
     logger.info("Disconnected from MQTT broker.")
 
 
-def publish(topic, data):
-    mqtt_client.publish(topic, data)
+
 
 
 

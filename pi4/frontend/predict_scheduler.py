@@ -66,7 +66,7 @@ def run_predict_model():
 def start_predict_scheduler():
     from apscheduler.schedulers.background import BackgroundScheduler
     scheduler = BackgroundScheduler()
-    scheduler.add_job(run_predict_model, 'interval', hours=24)
+    scheduler.add_job(run_predict_model, 'interval', hours=0.25)
     scheduler.start()
     logger.info("Predict scheduler started!")
 
