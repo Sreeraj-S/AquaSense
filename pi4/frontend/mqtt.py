@@ -3,7 +3,6 @@ from creation import db,app,logger
 import paho.mqtt.client as mqtt
 from config import Config
 from models import MotorMessage,AvailMessage,TopFillMessage,DataSensor,BottomFillMessage,PredictAvailMessage
-from scheduler import run_model
 
 
 MQTT_BROKER = Config.MQTT_BROKER
@@ -16,6 +15,8 @@ subscribed_topics = set()
 def publish(topic, data):
     mqtt_client.publish(topic, data)
 # MQTT Callbacks
+from scheduler import run_model
+
 def on_connect(client, userdata, flags, rc):
     logger.info("Connected with result code " + str(rc))
     for topic in MQTT_TOPICS.values():
