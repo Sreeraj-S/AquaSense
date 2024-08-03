@@ -1,0 +1,47 @@
+services:
+  mqtt:
+    build: ./backend/mosquitto
+    ports:
+      - "1883:1883"
+    networks:
+      aquasenseNet:
+        ipv4_address: 172.25.0.2
+
+  mysql:
+    build: ./backend/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      aquasenseNet:
+        ipv4_address: 172.25.0.3
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "--silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "80:5000"
+    environment:
+      FLASK_APP: app.py
+      FLASK_ENV: development
+      MYSQL_IP: mysql
+    depends_on:
+      mysql:
+        condition: service_healthy
+      mqtt:
+        condition: service_started
+    networks:
+      aquasenseNet:
+        ipv4_address: 172.25.0.4
+
+networks:
+  aquasenseNet:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.25.0.0/16

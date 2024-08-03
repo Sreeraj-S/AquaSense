@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ESP Wi-Fi Manager</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+  <div class="topnav">
+    <h1>Water Level Wi-Fi Manager</h1>
+  </div>
+  <div class="content">
+    <div class="card-grid">
+      <div class="card">
+        <form action="/" method="POST">
+          <p>
+            <label for="ssid">SSID</label>
+            <input type="text" id ="ssid" name="ssid"><br>
+            <label for="pass">Password</label>
+            <input type="text" id ="pass" name="pass"><br>
+            <label for="staticIp">Static IP</label>
+            <input type="checkbox" id="staticIp" name="staticIp"><br>
+            <label for="ip">IP Address</label>
+            <input type="text" id ="ip" name="ip" value="192.168.1.200"><br>
+            <label for="gateway">Gateway Address</label>
+            <input type="text" id ="gateway" name="gateway" value="192.168.1.1"><br>
+            <label for="mqttServer">MQTT Server</label>
+            <input type="text" id ="mqttServer" name="mqttServer"><br>
+            <label for="mqttPort">MQTT Port</label>
+            <input type="text" id ="mqttPort" name="mqttPort" value="1883"><br>
+            <label for="mqttUsername">MQTT Username</label>
+            <input type="text" id ="mqttUsername" name="mqttUsername"><br>
+            <label for="mqttPassword">MQTT Password</label>
+            <input type="text" id ="mqttPassword" name="mqttPassword"><br>
+            <label for="mqttTopic">MQTT Topic</label>
+            <input type="text" id ="mqttTopic" name="mqttTopic" value="esp32/test"><br>
+            <label for="len">Depth(in cm)</label>
+            <input type="text" id ="len" name="len"><br>
+            <input type ="submit" value ="Submit">
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+<script>
+
+  var checkbox = document.getElementById('staticIp');
+  var ipInput = document.getElementById('ip');
+  var gatewayInput = document.getElementById('gateway');
+
+
+  checkbox.addEventListener('change', function() {
+    ipInput.disabled = !checkbox.checked;
+    gatewayInput.disabled = !checkbox.checked;
+  });
+  ipInput.disabled = true;
+    gatewayInput.disabled=true;
+</script>
+</html>

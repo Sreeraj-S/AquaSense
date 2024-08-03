@@ -1,0 +1,51 @@
+main .monitoring{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.6rem;
+}
+
+main .monitoring > div{
+    background-color: var(--color-white);
+    padding: var(--card-padding);
+    border-radius: var(--card-border-radius);
+    margin-top: 1rem;
+    box-shadow: var(--box-shadow);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+main .monitoring > div:hover{
+    box-shadow: none;
+}
+
+main .monitoring > div .status{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+main .monitoring h3{
+    margin-left: 0.6rem;
+    font-size: 1rem;
+}
+
+@media screen and (max-width: 1200px) {
+    main .monitoring{    
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+}
+
+#avail_data{
+    display: block;
+    width: 10vh;
+    background-color: red;
+    height: 10vh;
+    border-radius: 5vh;
+    margin: 0 auto; /* Add this to center the element */
+}
+
+.info{
+    align-items: center;
+    justify-content: center;
+}

@@ -1,0 +1,6 @@
+.vscode/
+.git
+**/.env
+**/__pycache__
+.idea/
+.ipynb_checkpoints/

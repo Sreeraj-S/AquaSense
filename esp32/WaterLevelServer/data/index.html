@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Custom Page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body><div class="topnav">
+    <h1>Water Level</h1>
+  </div>
+  <div class="content">
+    <div class="card-grid">
+  <div class="card">
+Top
+      <div class="content">
+Filled: <p id="topDataToFill">0</p>
+    </div>
+<div class="content">
+To Fill:<p id="topDataFill">100</p>
+    </div>
+  </div>
+  <div class="card">
+Bottom
+    <div class="content">
+Filled: <p id="bottomDataToFill">100</p>
+    </div>
+<div class="content">
+To Fill:<p id="bottomDataFill">0</p>
+    </div>
+  </div>
+  </div>
+  </div>
+  </div>
+<script>
+function updateData(data) {
+      document.getElementById('topDataToFill').innerText = data.topDataToFill;
+document.getElementById('topDataFill').innerText = data.topDataFill;
+document.getElementById('bottomDataToFill').innerText = data.bottomDataToFill;
+document.getElementById('bottomDataFill').innerText = data.bottomDataFill;
+    }
+
+    setInterval(() => {
+      fetch('/data')
+        .then(response => response.json())
+        .then(data => updateData(data))
+        .catch(error => console.error('Error:', error));
+    }, 10000);
+</script>
+</body>
+
+</html>

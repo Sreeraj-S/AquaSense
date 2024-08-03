@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/controles.css') }}">
+
+    <title>Aqua Sense Controls</title>
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- Sidebar Section -->
+        <aside>
+            <div class="toggle">
+                <div class="logo">
+                    <h2><b>Aqua<span class="danger">Sense</span></b></h2>
+                </div>
+                <div class="close" id="close-btn">
+                    <span class="material-icons-sharp">
+                        close
+                    </span>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <a href="status">
+                    <span class="material-icons-sharp">dashboard</span>
+                    <h2><b>Status</b></h2>
+                </a>
+                <a href="controls" class="active">
+                    <span class="material-icons-sharp">settings</span>
+                    <h2><b>Controls</b></h2>
+                </a>
+                <a href="ai_result">
+                    <span class="material-icons-sharp">insights</span>
+                    <h2><b>AI Result</b></h2>
+                </a>
+                <a href="#">
+                    <span class="material-icons-sharp">contacts</span>
+                    <div class="contact-info">
+                        <h3>Contact</h3>
+                    </div>
+                </a>
+            </div>
+        </aside>
+        <!-- End of Sidebar Section -->
+
+        <!-- Main Content -->
+        <main>
+            <h1>Controls</h1>
+            <div class="controllers">
+                <div class="pump">
+                    <div class="controls">
+                        <div class="info">
+                            <h2><b>Motor Control</b></h2>
+                        </div>
+                       <div class="button">
+                        <label class="switch">
+                            <input type="checkbox" id="motor-switch">
+                            <span class="slider round vertical"></span>
+                        </label>
+                       </div>
+                    </div>
+                </div>
+                <div class="smart-pump">
+                    <div class="controls">
+                        <div class="info">
+                            <h2>Smart Pump with AI</h2>
+                        </div>
+                       <div class="button">
+                        <button id="smart-pump-button">Activate AI</button>
+                       </div>
+                    </div>
+                </div>
+                <div class="water-avail">
+                    <div class="controls">
+                        <div class="info">
+                            <h2>Water Prediction</h2>
+                        </div>
+                       <div class="button">
+                        <button id="predict-avail-button">Predict Water Availability</button>
+                       </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <div class="right-section">
+            <div class="nav">
+                <button id="menu-btn">
+                    <span class="material-icons-sharp">menu</span>
+                </button>
+                <div class="dark-mode">
+                    <span class="material-icons-sharp active">brightness_7</span>
+                    <span class="material-icons-sharp">brightness_4</span>
+                </div>
+
+                <div class="profile">
+                    <div class="info">
+                        <p>Hey, <b>USER</b></p>
+                        <small class="text-muted">Admin</small>
+                    </div>
+                    <div class="profile-photo">
+                        <img src="{{ url_for('static', filename='img/Admin.png') }}">
+                    </div>
+                </div>
+            </div>
+            <div class="user-profile">
+                <div class="logo">
+                    <img src="{{ url_for('static', filename='img/image.jpg') }}">
+                    <h2><b>A q u a<span class="danger"> S e n s e</span></b></h2>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='js/common.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/controles.js') }}"></script>
+
+</body>
+
+</html>
