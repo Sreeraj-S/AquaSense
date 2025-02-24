@@ -30,7 +30,7 @@ services:
       FLASK_ENV: development
       MYSQL_IP: mysql
     volumes:
-      - ./pi4/frontend:/app 
+      - ./frontend:/app 
     depends_on:
       mysql:
         condition: service_healthy
