@@ -29,6 +29,8 @@ services:
       FLASK_APP: app.py
       FLASK_ENV: development
       MYSQL_IP: mysql
+    volumes:
+      - ./pi4/frontend:/app 
     depends_on:
       mysql:
         condition: service_healthy
