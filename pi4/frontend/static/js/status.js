@@ -18,18 +18,20 @@ function updateUI() {
     const topFill = cachedData['esp32/top/fill'];
     const bottomFill = cachedData['esp32/bottom/fill'];
     const motorState = cachedData['esp32/motor'];
+    const phData = cachedData['esp32/ph'];
     const availData = cachedData['esp32/avail'];
 
     const topDataElement = document.getElementById('top_data');
     topDataElement.innerText = topFill !== undefined ? topFill + "%" : "--";
-    topDataElement.innerText = topFill !== undefined ? topFill + "%" : "--";
-
-
+ 
     const bottomDataElement = document.getElementById('bottom_data');
     bottomDataElement.innerText = bottomFill !== undefined ? bottomFill + "%" : "--";
 
     const motorDataElement = document.getElementById('motor_data');
     motorDataElement.innerText = motorState === 1 ? "ON" : motorState === 0 ? "OFF" : "--";
+
+    const phDataElement = document.getElementById('ph_data');
+    topTank.style.height = phData !== undefined ? `${phData} PH` : '--';
 
     const availDataElement = document.getElementById('avail_data');
     availDataElement.style.backgroundColor = availData === 1 ? 'green' : 'red';

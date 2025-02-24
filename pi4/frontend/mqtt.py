@@ -2,7 +2,7 @@
 from creation import db,app,logger
 import paho.mqtt.client as mqtt
 from config import Config
-from models import MotorMessage,AvailMessage,TopFillMessage,DataSensor,BottomFillMessage,PredictAvailMessage
+from models import MotorMessage,AvailMessage,TopFillMessage,DataSensor,BottomFillMessage,PredictAvailMessage,PhMessage
 
 
 MQTT_BROKER = Config.MQTT_BROKER
@@ -63,8 +63,9 @@ def on_message(client, userdata, msg):
             elif msg.topic == MQTT_TOPICS["BOTTOM_FILL"]:
                 bottom_fill_message = BottomFillMessage(payload=int(msg.payload.decode("utf-8")))
                 db.session.add(bottom_fill_message)
-                
-
+            elif msg.topic == MQTT_TOPICS["PH_SENSOR"]:
+                ph_message = PhMessage(payload=float(msg.payload.decode("utf-8")))
+                db.session.add(ph_message)
             db.session.commit()
         except Exception as e:
             logger.error("Error:", e)

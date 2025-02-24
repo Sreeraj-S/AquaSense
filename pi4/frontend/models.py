@@ -21,6 +21,11 @@ class MotorMessage(db.Model):
     payload = db.Column(db.Integer, nullable=False)
     timestamp = db.Column(db.DateTime, default=db.func.current_timestamp())
 
+class PhMessage(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    payload = db.Column(db.Float, nullable=False)
+    timestamp = db.Column(db.DateTime, default=db.func.current_timestamp())
+
 class AvailMessage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     payload = db.Column(db.Integer, nullable=False)

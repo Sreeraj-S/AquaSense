@@ -15,7 +15,8 @@ def create_app():
     TopFillMessage,
     BottomFillMessage,
     AvailMessage,
-    MotorMessage
+    MotorMessage,
+    PhMessage,
     )
     # Initialize extensions
     db.init_app(app)

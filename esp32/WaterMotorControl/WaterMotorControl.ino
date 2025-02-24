@@ -4,7 +4,7 @@
 #include <ESPAsyncWebServer.h>
 #include <AsyncTCP.h>
 #include <PubSubClient.h>
-#include "SPIFFS.h"
+#include "LittleFS.h"
 #include <ArduinoJson.h>
 
 AsyncWebServer server(80);
@@ -69,11 +69,11 @@ WiFiClient espClient;
 PubSubClient client(espClient);
 
 
-void initSPIFFS() {
-  if (!SPIFFS.begin(true)) {
-    Serial.println("An error has occurred while mounting SPIFFS");
+void initLittleFS() {
+  if (!LittleFS.begin(true)) {
+    Serial.println("An error has occurred while mounting LittleFS");
   }
-  Serial.println("SPIFFS mounted successfully");
+  Serial.println("LittleFS mounted successfully");
 }
 
 String readFile(fs::FS& fs, const char* path) {
@@ -163,37 +163,53 @@ void reconnect() {
     }
   }
 }
+void stateChange(String state) {
+  if (state == "on") {
+    digitalWrite(RELAY, HIGH); // Turn relay ON
+    println("on")
+  } else if (state == "off") {
+    digitalWrite(RELAY, LOW);  // Turn relay OFF
+    println("on")
+
+  }
+}
+
 void callback(char* topic, byte* payload, unsigned int length) {
   Serial.print("Message arrived on topic: ");
   Serial.println(topic);
-
+if (strcmp(topic, (mqttTopic + "state").c_str()) != 0) {
+    // If the topic doesn't match, exit the function
+    return;
+  }
   Serial.print("Payload: ");
+  state="";
   for (int i = 0; i < length; i++) {
+    
     state = state + (char)payload[i];
   }
-  Serial.println(temp);
+stateChange(state)
 }
 
 void setup() {
   Serial.begin(115200);
 
-  initSPIFFS();
+  initLittleFS();
 
 
   pinMode(RELAY, OUTPUT);
   digitalWrite(RELAY, LOW);
 
 
-  ssid = readFile(SPIFFS, ssidPath);
-  pass = readFile(SPIFFS, passPath);
-  ip = readFile(SPIFFS, ipPath);
-  gateway = readFile(SPIFFS, gatewayPath);
-  staticIp = readFile(SPIFFS, staticIpPath);
-  mqttServer = readFile(SPIFFS, mqttServerPath);
-  mqttPort = readFile(SPIFFS, mqttPortPath).toInt();
-  mqttUsername = readFile(SPIFFS, mqttUsernamePath);
-  mqttPassword = readFile(SPIFFS, mqttPasswordPath);
-  mqttTopic = readFile(SPIFFS, mqttTopicPath);
+  ssid = readFile(LittleFS, ssidPath);
+  pass = readFile(LittleFS, passPath);
+  ip = readFile(LittleFS, ipPath);
+  gateway = readFile(LittleFS, gatewayPath);
+  staticIp = readFile(LittleFS, staticIpPath);
+  mqttServer = readFile(LittleFS, mqttServerPath);
+  mqttPort = readFile(LittleFS, mqttPortPath).toInt();
+  mqttUsername = readFile(LittleFS, mqttUsernamePath);
+  mqttPassword = readFile(LittleFS, mqttPasswordPath);
+  mqttTopic = readFile(LittleFS, mqttTopicPath);
   Serial.println(ssid);
   Serial.println(pass);
   Serial.println(ip);
@@ -223,16 +239,16 @@ void setup() {
 
 void webServerConfig() {
   server.on("/", HTTP_GET, [](AsyncWebServerRequest * request) {
-    request->send(SPIFFS, "/wifimanager.html", "text/html");
+    request->send(LittleFS, "/wifimanager.html", "text/html");
   });
 
-  server.serveStatic("/", SPIFFS, "/");
+  server.serveStatic("/", LittleFS, "/");
 
   server.on("/", HTTP_POST, [](AsyncWebServerRequest * request) {
     int params = request->params();
     Serial.println(params);
     for (int i = 0; i < params; i++) {
-      AsyncWebParameter* p = request->getParam(i);
+      const AsyncWebParameter* p = request->getParam(i);
       if (p->isPost()) {
         Serial.println(p->name());
         Serial.println(p->value());
@@ -240,64 +256,64 @@ void webServerConfig() {
           ssid = p->value().c_str();
           Serial.print("SSID set to: ");
           Serial.println(ssid);
-          writeFile(SPIFFS, ssidPath, ssid.c_str());
+          writeFile(LittleFS, ssidPath, ssid.c_str());
         }
         if (p->name() == PARAM_INPUT_2) {
           pass = p->value().c_str();
           Serial.print("Password set to: ");
           Serial.println(pass);
-          writeFile(SPIFFS, passPath, pass.c_str());
+          writeFile(LittleFS, passPath, pass.c_str());
         }
         // HTTP POST ip value
         if (p->name() == PARAM_INPUT_3) {
           ip = p->value().c_str();
           Serial.print("IP Address set to: ");
           Serial.println(ip);
-          writeFile(SPIFFS, ipPath, ip.c_str());
+          writeFile(LittleFS, ipPath, ip.c_str());
         }
         if (p->name() == PARAM_INPUT_4) {
           gateway = p->value().c_str();
           Serial.print("Gateway set to: ");
           Serial.println(gateway);
-          writeFile(SPIFFS, gatewayPath, gateway.c_str());
+          writeFile(LittleFS, gatewayPath, gateway.c_str());
         }
         if (p->name() == PARAM_INPUT_5) {
           staticIp = p->value().c_str();
           Serial.print("Static Ip: ");
           Serial.println(staticIp);
-          writeFile(SPIFFS, staticIpPath, staticIp.c_str());
+          writeFile(LittleFS, staticIpPath, staticIp.c_str());
         }
         if (p->name() == PARAM_INPUT_6) {
           mqttServer = p->value().c_str();
           Serial.print("MQTT Server: ");
           Serial.println(mqttServer);
-          writeFile(SPIFFS, mqttServerPath, mqttServer.c_str());
+          writeFile(LittleFS, mqttServerPath, mqttServer.c_str());
         }
         if (p->name() == PARAM_INPUT_7) {
           mqttPort = p->value().toInt();
           Serial.print("MQTT Port: ");
           Serial.println(mqttPort);
           String mqttPortString = String(mqttPort);
-          writeFile(SPIFFS, mqttPortPath, mqttPortString.c_str());
+          writeFile(LittleFS, mqttPortPath, mqttPortString.c_str());
 
         }
         if (p->name() == PARAM_INPUT_8) {
           mqttUsername = p->value().c_str();
           Serial.print("MQTT Username: ");
           Serial.println(mqttUsername);
-          writeFile(SPIFFS, mqttUsernamePath, mqttUsername.c_str());
+          writeFile(LittleFS, mqttUsernamePath, mqttUsername.c_str());
         }
         if (p->name() == PARAM_INPUT_9) {
           mqttPassword = p->value().c_str();
           Serial.print("MQTT Password: ");
           Serial.println(mqttPassword);
-          writeFile(SPIFFS, mqttPasswordPath, mqttPassword.c_str());
+          writeFile(LittleFS, mqttPasswordPath, mqttPassword.c_str());
         }
         if (p->name() == PARAM_INPUT_10) {
           mqttTopic = p->value().c_str();
           Serial.print("MQTT Topic: ");
           Serial.println(mqttTopic);
-          writeFile(SPIFFS, mqttTopicPath, mqttTopic.c_str());
+          writeFile(LittleFS, mqttTopicPath, mqttTopic.c_str());
         }
       }
     }
@@ -310,14 +326,14 @@ void webServerConfig() {
 
 void webServerViewer() {
   server.on("/level", HTTP_GET, [](AsyncWebServerRequest * request) {
-    request->send(SPIFFS, "/index.html", "text/html");
+    request->send(LittleFS, "/index.html", "text/html");
   });
   server.on("/data", HTTP_GET, [](AsyncWebServerRequest * request) {
     String jsonData;
     serializeJson(doc, jsonData);
     request->send(200, "application/json", jsonData);
   });
-  server.serveStatic("/", SPIFFS, "/");
+  server.serveStatic("/", LittleFS, "/");
   server.begin();
 }
 

@@ -20,6 +20,7 @@ class Config:
         "AVAIL": os.getenv('AVAIL'),
         "PREDICT_AVAIL": os.getenv('PREDICT_AVAIL'),
         "SMART_PUMP": os.getenv('SMART_PUMP')
+        "PH_SENSOR": os.getenv('PH_SENSOR')
     }
     SMART_PUMP_MODEL=os.getenv('SMART_PUMP_MODEL')
     MQTT_KEEPALIVE_INTERVAL = int(os.getenv('MQTT_KEEPALIVE_INTERVAL', 45))

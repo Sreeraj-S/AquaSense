@@ -1,4 +1,3 @@
-
 #include <Arduino.h>
 #include <WiFi.h>
 #include <ESPAsyncWebServer.h>
@@ -249,7 +248,7 @@ void webServerConfig() {
     int params = request->params();
     Serial.println(params);
     for (int i = 0; i < params; i++) {
-      AsyncWebParameter* p = request->getParam(i);
+      qAsyncWebParameter* p = request->getParam(i);
       if (p->isPost()) {
         Serial.println(p->name());
         Serial.println(p->value());
