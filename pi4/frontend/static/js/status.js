@@ -31,7 +31,7 @@ function updateUI() {
     motorDataElement.innerText = motorState === 1 ? "ON" : motorState === 0 ? "OFF" : "--";
 
     const phDataElement = document.getElementById('ph_data');
-    topTank.style.height = phData !== undefined ? `${phData} PH` : '--';
+    phDataElement.innerText = phData !== undefined ? `${phData} PH` : '--';
 
     const availDataElement = document.getElementById('avail_data');
     availDataElement.style.backgroundColor = availData === 1 ? 'green' : 'red';
