@@ -12,6 +12,7 @@ ENV MOTOR=esp32/motor
 ENV AVAIL=esp32/avail
 ENV PREDICT_AVAIL=esp32/predict_avail
 ENV SMART_PUMP=esp32/smart_pump
+ENV SMS_API_KEY=h3oNX5OPmsT0VcJ7lSqWu8zDfe9Uyvri1tE6HxagFRBnZjCGLbHD7W39Aj14h0kfCva8oqRKzFntUPOJ
 ENV PH_SENSOR=esp32/ph
 ENV SMART_PUMP_MODEL=mlmodel/SmartWaterPumpModel.pt
 ENV PREDICT_AVAIL_MODEL=mlmodel/PredictWaterAvailModel.pt

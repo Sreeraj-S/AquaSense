@@ -40,3 +40,9 @@ class SmartPumpMessage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     payload = db.Column(db.Integer, nullable=False)
     timestamp = db.Column(db.DateTime, default=db.func.current_timestamp())
+
+
+class Alerts(db.Model):
+    alert_type=db.Column(db.String(500), nullable=False,primary_key=True)
+    state = db.Column(db.Integer, nullable=False)
+    timestamp = db.Column(db.DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())

@@ -2,6 +2,7 @@
 from creation import db,app,logger
 import paho.mqtt.client as mqtt
 from config import Config
+from alerts import call_sms_alert
 from models import MotorMessage,AvailMessage,TopFillMessage,DataSensor,BottomFillMessage,PredictAvailMessage,PhMessage
 
 
@@ -58,8 +59,15 @@ def on_message(client, userdata, msg):
                 db.session.add(top_fill_message)
                 if top_fill_message > 90 and db.session.query(DataSensor).filter(DataSensor.topic == MQTT_TOPICS["MOTOR"]).first().payload == 1:
                     publish(MQTT_TOPICS["MOTOR"], 0)
-                if top_fill_message < 10 and db.session.query(DataSensor).filter(DataSensor.topic == MQTT_TOPICS["MOTOR"]).first().payload == 0:
-                    run_model()
+                if top_fill_message.payload < 10:
+                    # Check the bottom tank fill level from DataSensor
+                    bottom_fill_message = db.session.query(DataSensor).filter(DataSensor.topic == MQTT_TOPICS["BOTTOM_FILL"]).first()
+                    if bottom_fill_message and bottom_fill_message.payload < 10:
+                        call_sms_alert(['9496094030'],"Warning! Both upper and bottom tank water level is low")
+
+                    # Check if the motor is off and run the model if needed
+                    if db.session.query(DataSensor).filter(DataSensor.topic == MQTT_TOPICS["MOTOR"]).first().payload == 0:
+                        run_model()
             elif msg.topic == MQTT_TOPICS["BOTTOM_FILL"]:
                 bottom_fill_message = BottomFillMessage(payload=int(msg.payload.decode("utf-8")))
                 db.session.add(bottom_fill_message)

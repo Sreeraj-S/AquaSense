@@ -17,6 +17,9 @@ def create_app():
     AvailMessage,
     MotorMessage,
     PhMessage,
+    Alerts,
+    PredictAvailMessage,
+
     )
     # Initialize extensions
     db.init_app(app)

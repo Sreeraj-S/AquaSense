@@ -26,4 +26,5 @@ class Config:
     MQTT_KEEPALIVE_INTERVAL = int(os.getenv('MQTT_KEEPALIVE_INTERVAL', 45))
     PREDICT_AVAIL_MODEL=os.getenv('PREDICT_AVAIL_MODEL')
     MOTOR_TIMER=int(os.getenv('MOTOR_TIMER', 7))
+    SMS_API_KEY=os.getenv('SMS_API_KEY')
     logger.info("Environment variables loaded")

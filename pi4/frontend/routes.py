@@ -1,11 +1,12 @@
 from flask import Blueprint, render_template, redirect, jsonify
 from mqtt import publish
 from config import Config
-from models import DataSensor
+from models import DataSensor,Alerts
+from alerts import call_sms_alert
 from scheduler import run_model
 from predict_scheduler import run_predict_model
 
-from creation import logger
+from creation import logger,db
 
 
 main = Blueprint('main', __name__)
@@ -30,6 +31,37 @@ def control():
 def ai_result():
     logger.debug("Loading AI result page")
     return render_template('ai_result.html')
+@main.route('/alerts')
+def alerts():
+    logger.debug("Loading Alerts page")
+    return render_template('alerts.html')
+
+@main.post('/sms_alert/<data>')
+def sms_alert_data(data: str):
+    if data not in ["on", "off"]:
+        logger.error("Invalid data. Only 'on' or 'off' are accepted.")
+        return jsonify({"error": "Invalid data. Only 'on' or 'off' are accepted."}), 400
+
+    logger.debug("Received %s data", data)
+    
+    # Check if the alert already exists
+    alert = Alerts.query.filter_by(alert_type="sms_alert").first()
+    if alert:
+        # Update the existing alert state
+        alert.state = 1 if data == "on" else 0
+        logger.info("Updated existing sms_alert state to %s", alert.state)
+    else:
+        # Add a new alert row
+        alert = Alerts(alert_type="sms_alert", state=1 if data == "on" else 0)
+        db.session.add(alert)
+        logger.info("Added new sms_alert row with state %s", alert.state)
+
+    # Commit the changes to the database
+    db.session.commit()
+    call_sms_alert(['9496094030'],'SMS Turned ON')
+    # Publish to MQTT
+    return jsonify({"message": "Motor data published successfully."}), 200
+
 
 @main.post('/motor/<data>')
 def motor_data(data: str):
@@ -72,6 +104,17 @@ def get_switch_state():
     if state:
         logger.debug("State: %s", state.payload)
         return jsonify({"state":state.payload})
+    else:
+        logger.debug("State: 0")
+        return jsonify({"state":0})
+
+@main.route('/sms_alert/state')
+def get_sms_alert_state():
+    logger.debug("Getting sms_alert state")
+    state = Alerts.query.filter(Alerts.alert_type == "sms_alert").first()
+    if state:
+        logger.debug("State: %s", state.state)
+        return jsonify({"state":state.state})
     else:
         logger.debug("State: 0")
         return jsonify({"state":0})
